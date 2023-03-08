@@ -1,0 +1,1 @@
+export type Answer = { querySentence: string, dbAnswerRows: { [key: string]: string }[], humanReadableAnswer: string }
