@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { ask } from "../../api/ask"
 import { Answer as AnswerType } from "../../types/answer.type"
+import Answer from "../Answer/Answer"
 import './ask.module.css'
 
 export default function Ask() {
@@ -32,5 +33,7 @@ export default function Ask() {
         <input type='hidden' onClick={handleQuestion} />
       </form>
     }
+
+    <Answer {...answer}></Answer>
   </>
 }
