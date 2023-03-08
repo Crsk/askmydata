@@ -8,10 +8,10 @@ export async function askController(req: Request, res: Response): Promise<Respon
     if (apiKey) {
       const openAIHelper = new OpenAIHelper(apiKey)
       const { question } = req.body
-      const partialQuery = await openAIHelper.questionToSQL(question)
-      const dbAnswer = await openAIHelper.dbQuery(partialQuery)
-      const humanReadableAnswer = await openAIHelper.explainDbAnswer(question, dbAnswer)
-      return res.status(200).json({ partialQuery, dbAnswer, humanReadableAnswer })
+      const querySentence = await openAIHelper.questionToSQL(question)
+      const dbAnswerRows = await openAIHelper.dbQuery(querySentence)
+      const humanReadableAnswer = await openAIHelper.explainDbAnswer(question, dbAnswerRows)
+      return res.status(200).json({ querySentence, dbAnswerRows, humanReadableAnswer })
     }
   } catch (e) {
     console.log('❌ Something bad happened')
@@ -43,7 +43,7 @@ class OpenAIHelper {
    * Creates an SQL query according to the user's question
    * @param question The question the user is asking to aut system
    * @param accurateButSlower Switch between davinci-002 and cushman-001 (almost as capable as Davinci, but slightly faster)
-   * @returns An SQL query starting without `SELECT`
+   * @returns An SQL query statement starting with `SELECT ...`
    */
   public async questionToSQL(question: string, accurateButSlower: boolean = false): Promise<string> {
     const prompt = `${this._getSchemaTextContext()}
@@ -60,17 +60,16 @@ class OpenAIHelper {
       stop: ["#", ";"]
     })
 
-    return response.data.choices[0].text || 'Try again'
+    return `SELECT ${response.data.choices[0].text}` || 'Try again'
   }
   /**
    * Gets real data accoring to an SQL query
-   * @param partialQuery The SQL query starting without `SELECT`
+   * @param querySentence The SQL query sentence starting with `SELECT ...`
    */
-  public async dbQuery(partialQuery: string): Promise<any> {
+  public async dbQuery(querySentence: string): Promise<any> {
     const conn = await connect()
     try {
-      const query = `SELECT ${partialQuery}`
-      const [rows] = await conn.query(query)
+      const [rows] = await conn.query(querySentence)
       return rows
     } catch (e) { console.log(e) }
     return []
