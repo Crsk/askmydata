@@ -1,3 +1,5 @@
+import Ask from './components/Ask/Ask'
+
 export default function App() {
-  return <div>Hello World</div>
+  return <Ask></Ask>
 }
