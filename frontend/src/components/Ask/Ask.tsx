@@ -6,14 +6,14 @@ import './ask.module.css'
 export default function Ask() {
   const [question, setQuestion] = useState<string>('')
   const [loading, setLoading] = useState<boolean>(false)
-  const [answer, setAnswer] = useState<AnswerType>({ sentence: '', rows: [], humanReadable: '' })
+  const [answer, setAnswer] = useState<AnswerType>({ querySentence: '', dbAnswerRows: [], humanReadableAnswer: '' })
 
   const handleQuestion = async (e: any) => {
     e.preventDefault()
     try {
       setLoading(true)
-      const { sentence, rows, humanReadable } = await ask(question)
-      setAnswer({ sentence, rows, humanReadable })
+      const { querySentence, dbAnswerRows, humanReadableAnswer } = await ask(question)
+      setAnswer({ querySentence, dbAnswerRows, humanReadableAnswer })
       setLoading(false)
     } catch (e) {
       console.error(e)
