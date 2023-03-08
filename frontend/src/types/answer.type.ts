@@ -1,0 +1,1 @@
+export type Answer = { sentence: string, rows: { [key: string]: string }[], humanReadable: string }
