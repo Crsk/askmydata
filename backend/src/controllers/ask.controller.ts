@@ -14,6 +14,7 @@ export async function askController(req: Request, res: Response): Promise<Respon
       return res.status(200).json({ querySentence, dbAnswerRows, humanReadableAnswer })
     }
   } catch (e) {
+    res.sendStatus(400)
     console.log('❌ Something bad happened')
   }
   return res.status(400)
@@ -33,7 +34,7 @@ class OpenAIHelper {
   private _getSchemaTextContext() {
     return `### MySQL schema table(...properties):
     # branch(id, name, address)
-    # seller(id, name, department_id)
+    # seller(id, name, branch_id)
     # product(id, name, price)
     # customer(id, name)
     # invoice(id, seller_id, customer_id, product_id, amount, date)`
