@@ -18,7 +18,7 @@ export default function Ask() {
       setLoading(false)
     } catch (e) {
       console.error(e)
-      alert('Something bad happened 🤒')
+      alert('❌ Something bad happened')
       setLoading(false)
     }
   }
