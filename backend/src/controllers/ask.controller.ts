@@ -32,12 +32,13 @@ class OpenAIHelper {
    * I'm putting this separately in case is needed somewhere else, just remember that GPT remembers 😉
    */
   private _getSchemaTextContext() {
-    return `### MySQL schema table(...properties):
-    # branch(id, name, address)
-    # seller(id, name, branch_id)
-    # product(id, name, price)
-    # customer(id, name)
-    # invoice(id, seller_id, customer_id, product_id, amount, date)`
+    return `#MySQL schema table(...properties):
+      #seller{id, name, branch_id}
+      #branch{id, name, address}
+      #customer{id, name}
+      #invoice {id, created_at, seller_id, customer_id, branch_id, customer_feedback}
+      #product {id, name, price}
+      #invoice_item{id, invoice_id, product_id}`
   }
 
   /**
